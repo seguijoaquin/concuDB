@@ -1,0 +1,16 @@
+#ifndef MESSAGES_H_
+#define MESSAGES_H_
+
+#define REQUEST        1
+#define RESPONSE       2
+#define TEXT_SIZE      255
+
+
+typedef struct message {
+        long mtype;
+        int id;
+        char text[TEXT_SIZE];
+} message;
+
+#endif /* MESSAGES_H_ */
+
