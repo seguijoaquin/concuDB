@@ -32,7 +32,7 @@
 *.app
 
 client/CMakeFiles/*
-client/CMakeCache.tx
+client/CMakeCache.txt
 client/*.cmake
 client/Makefile
 client/*.log
@@ -40,7 +40,7 @@ client/ConcuClient
 client/*.out
 
 server/CMakeFiles/*
-server/CMakeCache.tx
+server/CMakeCache.txt
 server/*.cmake
 server/Makefile
 server/*.log
