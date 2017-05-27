@@ -9,7 +9,7 @@
 typedef struct message {
         long mtype;
         int id;
-        char text[TEXT_SIZE];
+        char text;
 } message;
 
 #endif /* MESSAGES_H_ */

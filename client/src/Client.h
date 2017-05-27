@@ -15,7 +15,7 @@ class Client {
         public:
                 Client ( const std::string& file,const char c );
                 ~Client();
-                message sendRequest ( const int id, const std::string& text ) const;
+                message sendRequest ( /*const std::string&*/ char text ) const;
 };
 
 #endif /* CLIENT_H_ */

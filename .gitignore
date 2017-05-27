@@ -47,3 +47,5 @@ server/*.log
 server/ConcuServer
 server/*.out
 
+
+.vscode/*

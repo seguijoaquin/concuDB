@@ -11,14 +11,14 @@ Client :: ~Client() {
         delete this->queue;
 }
 
-message Client :: sendRequest ( const int id, const std::string& text ) const {
+message Client :: sendRequest ( /*const std::string&*/ char text ) const {
         message req;
         message res;
 
         req.mtype = REQUEST;
-        
-        req.id = id;
-        strcpy ( req.text,text.c_str() );
+        req.id = getpid();
+        //strcpy ( req.text,text.c_str() );
+        req.text = text;
 
         this->queue->write ( req );
         this->queue->read ( getpid(),&res );

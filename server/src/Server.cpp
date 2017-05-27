@@ -1,5 +1,6 @@
 #include "Server.h"
 #include "../../utils/Logger.h"
+#include "../../utils/Constants.h"
 
 Server :: Server (const std::string& file, const char c ) {
 	this->queue = new Queue<message> (file,c);
@@ -16,17 +17,20 @@ void Server :: start () {
                 sleep(5);
                 this->answerRequest();
                 sleep(5);
-        }        
+        } 
+        this->response.mtype = this->requestReceived.id;
+        this->response.id = RESPONSE;
+        this->response.text = 'S';
+        this->answerRequest();        
 }
 
 bool Server :: getRequest () {
         Logger::getInstance()->debug("Esperando request...");
+        sleep(1);
         this->queue->read ( REQUEST,&(this->requestReceived) );
         Logger::getInstance()->debug("Request recibido!");
-        if (this->requestReceived.id > 0) {
-                return true;
-        }
-        return false;
+        sleep(1);
+        return (this->requestReceived.text != SALIDA);
 }
 
 int Server :: processRequest () {
@@ -39,9 +43,10 @@ int Server :: processRequest () {
         //mtype of the response is the id of the process who made the petition to the server
         this->response.mtype = this->requestReceived.id;
         this->response.id = RESPONSE;
-        std::stringstream res;
-        res << "OK";
-        strcpy ( this->response.text,res.str().c_str() );
+        this->response.text = 'S';
+        //std::stringstream res;
+        //res << "OK";
+        //strcpy ( this->response.text,res.str().c_str() );
 
         return 0;
 }

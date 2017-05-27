@@ -1,6 +1,9 @@
 #include <iostream>
 #include "../../utils/Logger.h"
 #include "Client.h"
+#include "../../utils/Constants.h"
+#include <strings.h>
+#include <string>
 
 
 
@@ -10,15 +13,18 @@ int main() {
 
 	Client client ("../ftok",'a');
 
-	std::stringstream request;
-	request << "HOLA";
-	message res = client.sendRequest(getpid(),request.str());
-    Logger::getInstance()->debug(res.text);
+	Logger::getInstance()->debug("Enviando un mensaje al servidor..."); sleep(1);
+	message res = client.sendRequest('A');
+    Logger::getInstance()->debug("Enviado: A");
+	std::cout << "Respuesta: " << res.text << std::endl;
+	
+	sleep(3);
+	Logger::getInstance()->debug("Enviando mensaje de salida al servidor..."); sleep(1);
+	message res2 = client.sendRequest(SALIDA);
+	std::cout << "Respuesta: " << res.text << std::endl;
+	
+	sleep(1);
 
-	
-	message res2 = client.sendRequest(0,request.str());
-    Logger::getInstance()->debug(res2.text);
-	
 	Logger::getInstance()->debug("Finalizando Cliente");
 	
 	return 0;
