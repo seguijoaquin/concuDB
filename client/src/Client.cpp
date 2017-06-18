@@ -8,7 +8,6 @@ Client :: Client ( const std::string& file,const char c ) {
 }
 
 Client :: ~Client() {
-        //this->queue->destroy ();
         delete this->queue;
 }
 

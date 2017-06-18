@@ -26,15 +26,6 @@ public:
 
     virtual int handleSignal ( int signum ) {
         assert ( signum == SENAL_SALIDA );
-/*
-        Queue<message> cola("../ftok",'a');
-        message req;
-        req.mtype = REQUEST;
-        req.id = getpid();
-        req.queryType = SALIDA;
-        req.text = '0';
-        cola.write ( req );
-*/
         Logger::getInstance()->debug("Recibo señal de salida");
         this->gracefulQuit = 1;
         return 0;

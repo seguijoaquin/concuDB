@@ -5,7 +5,6 @@
 
 Server :: Server (const std::string& file, const char c ) {
 	this->queue = new Queue<message> (file,c);
-        this->serverpid = getpid();
 }
 
 Server :: ~Server () {
@@ -28,7 +27,6 @@ void Server :: start () {
                 if ( this->getRequest(&requestReceived) ) {
                         message response = this->processRequest(&requestReceived);
                         this->answerRequest(response);
-                        this->endCommunication();
                         exit(EXIT_SUCCESS);
                 }
                 sleep(1);
@@ -80,22 +78,3 @@ int Server :: answerRequest (message response) const {
         //returns the id of the process who's picking up the server message
         return response.id;
 }
-
-int Server :: endCommunication () {
-        //this->queue->destroy();
-        //delete (this->queue);
-        return 0;
-}
-/*
-message Server :: getRequestReceived () const {
-        return this->requestReceived;
-}
-
-message Server :: getResponse () const {
-        return this->response;
-}
-*/
-__pid_t Server :: getServerPid () const {
-        return this->serverpid;
-}
-
