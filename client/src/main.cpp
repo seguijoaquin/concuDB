@@ -8,13 +8,24 @@
 
 message buildNameSearch(Client* client) {
 	Logger::getInstance()->debug("Enviando un mensaje de busqueda...");
-	return client->sendRequest(FIND_NAME,'B');
+	message newMessage;
+	memset (&newMessage,0,sizeof(message));
+	return client->sendRequest(FIND_NAME,newMessage);
 };
 
 message buildNewRegister(Client* client) {
 	//TODO: Armar message a enviar con los datos del nuevo registro
+	message newMessage;
+	memset (&newMessage,0,sizeof(message));
+	std::cout << "Ingrese nombre: ";
+	std::cin >> newMessage.row.nombre;
+	std::cout << "Ingrese direccion (sin espacios, arreglar bug): ";
+	std::cin >> newMessage.row.direccion;
+	std::cout << "Ingrese telefono: ";
+	std::cin >> newMessage.row.telefono;
+
 	Logger::getInstance()->debug("Enviando un mensaje de nuevo registro...");
-	return client->sendRequest(INSERT,'A');
+	return client->sendRequest(INSERT,newMessage);
 };
 
 bool generateRequest(message* request, Client* client) {

@@ -5,12 +5,20 @@
 #define RESPONSE       2
 #define TEXT_SIZE      255
 
+typedef struct row {
+        int id;
+        char nombre[61];
+        char direccion[120];
+        char telefono[13];
+} row;
+
 
 typedef struct message {
         long mtype;
         int id;
         char queryType;
         char text;
+        struct row row;
 } message;
 
 #endif /* MESSAGES_H_ */

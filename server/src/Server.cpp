@@ -54,6 +54,13 @@ message Server :: processRequest (message* requestReceived) const {
 
         if (requestReceived->queryType == INSERT) {
                 Logger::getInstance()->debug("Insertando fila");
+                std::stringstream nombre,direccion,telefono;
+                nombre << "Nombre: " << requestReceived->row.nombre;
+                Logger::getInstance()->debug(nombre.str().c_str());
+                direccion << "Direccion: " << requestReceived->row.direccion;
+                Logger::getInstance()->debug(direccion.str().c_str());
+                telefono << "Telefono: " << requestReceived->row.telefono;
+                Logger::getInstance()->debug(telefono.str().c_str());
         }
 
         if (requestReceived->queryType == FIND_NAME) {
