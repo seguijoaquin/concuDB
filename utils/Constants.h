@@ -8,6 +8,8 @@ const char INSERT = 'i';
 
 const char FIND_NAME = 'n';
 
+const char SALIDA = 's';
+
 
 #define SENAL_SALIDA SIGINT
 

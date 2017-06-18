@@ -19,7 +19,7 @@ int main() {
 	std::stringstream textoRta;
     textoRta << "Respuesta: " << res.text << std::endl;
     Logger::getInstance()->debug(textoRta.str().c_str()); 
-/*	
+
 	sleep(3);
 	Logger::getInstance()->debug("Enviando mensaje al servidor..."); sleep(1);
 	message res2 = client.sendRequest(FIND_NAME,'B');
@@ -29,7 +29,7 @@ int main() {
     Logger::getInstance()->debug(textoRta2.str().c_str()); 
 	
 	sleep(1);
-*/
+
 	Logger::getInstance()->debug("Finalizando Cliente");
 	
 	return 0;

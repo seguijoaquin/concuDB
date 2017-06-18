@@ -52,11 +52,8 @@ template <class T> int Queue<T> :: write ( const T& data ) const {
 }
 
 template <class T> int Queue<T> :: read ( const int type,T* buffer ) const {
+	//Error handled outside read call
 	int result = msgrcv ( this->id,static_cast<void *>(buffer),sizeof(T)-sizeof(long),type,0 );
-	if (result == -1) {
-		perror("msgrcv");
-		exit(EXIT_FAILURE);
-	}
 	return result;
 }
 

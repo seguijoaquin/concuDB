@@ -40,7 +40,8 @@ void Server :: start () {
 bool Server :: getRequest (message* requestReceived) const {
         Logger::getInstance()->debug("Esperando request...");
         message newRequest;
-        this->queue->read ( REQUEST, &(newRequest) );
+        int result = this->queue->read ( REQUEST, &(newRequest) );
+        if ( result == -1 ) return false;
         if ( fork() == 0 ) {
                 (*requestReceived) = newRequest;
                 return true;
