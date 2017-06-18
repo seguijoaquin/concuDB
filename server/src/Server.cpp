@@ -62,10 +62,11 @@ message Server :: processRequest (message* requestReceived) const {
                 Logger::getInstance()->debug("Buscando nombre");
         }
         std::stringstream textoRta;
-        textoRta << "[Recibido: " << requestReceived->id << "] = " << requestReceived->text;
+        textoRta << "[Recibido de : " << requestReceived->id << "] = " << requestReceived->text;
         Logger::getInstance()->debug(textoRta.str().c_str());
         //mtype of the response is the id of the process who made the petition to the server
         message response;
+        memset(&response, 0, sizeof(message));
         response.mtype = requestReceived->id;
         response.id = RESPONSE;
         response.queryType = 'a';

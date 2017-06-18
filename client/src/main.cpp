@@ -6,29 +6,47 @@
 #include <string>
 
 
+message buildNameSearch(Client* client) {
+	Logger::getInstance()->debug("Enviando un mensaje de busqueda...");
+	return client->sendRequest(FIND_NAME,'B');
+};
+
+message buildNewRegister(Client* client) {
+	//TODO: Armar message a enviar con los datos del nuevo registro
+	Logger::getInstance()->debug("Enviando un mensaje de nuevo registro...");
+	return client->sendRequest(INSERT,'A');
+};
+
+bool generateRequest(message* request, Client* client) {
+	std::cout << std::endl;
+	std::cout << "Qué desea hacer?" << std::endl;
+	std::cout << "----------------" << std::endl;
+	std::cout << "1) Ingresar nuevo registro" << std::endl;
+	std::cout << "2) Consultar por nombre" << std::endl;
+	std::cout << "3) Salir" << std::endl;
+	char input;
+	std::cin >> input;
+	std::cout << "Eligió la opción: " << input << std::endl;
+	if (input == '3') return false;
+	if (input == '2') (*request) = buildNameSearch(client);
+	if (input == '1') (*request) = buildNewRegister(client);
+	return true;
+}
 
 int main() {
 	
 	Logger::getInstance()->debug("Iniciando Cliente");
 
 	Client client ("../ftok",'a');
+	message newMessage;
+	memset (&newMessage,0,sizeof(newMessage));
 
-	Logger::getInstance()->debug("Enviando un mensaje al servidor..."); sleep(1);
-	message res = client.sendRequest(INSERT,'A');
-    Logger::getInstance()->debug("Enviado: A");
-	std::stringstream textoRta;
-    textoRta << "Respuesta: " << res.text << std::endl;
-    Logger::getInstance()->debug(textoRta.str().c_str()); 
-
-	sleep(3);
-	Logger::getInstance()->debug("Enviando mensaje al servidor..."); sleep(1);
-	message res2 = client.sendRequest(FIND_NAME,'B');
-	Logger::getInstance()->debug("Enviado: B");
-	std::stringstream textoRta2;
-    textoRta2 << "[Respuesta: " << res2.text << std::endl;
-    Logger::getInstance()->debug(textoRta2.str().c_str()); 
-	
-	sleep(1);
+	while ( generateRequest(&newMessage,&client) ) {
+		std::stringstream textoRta;
+    	textoRta << "Respuesta: " << newMessage.text;
+    	Logger::getInstance()->debug(textoRta.str().c_str());
+		sleep(1);
+	}
 
 	Logger::getInstance()->debug("Finalizando Cliente");
 	

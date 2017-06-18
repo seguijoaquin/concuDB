@@ -15,7 +15,7 @@ Logger* Logger::getInstance() {
 
 Logger::~Logger() {
     ioFile.close();
-    delete Logger::logger;
+    delete (Logger::logger);
 }
 
 std::string Logger::getTime() {
