@@ -9,6 +9,7 @@
 typedef struct message {
         long mtype;
         int id;
+        char queryType;
         char text;
 } message;
 

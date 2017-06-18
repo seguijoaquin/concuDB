@@ -7,16 +7,17 @@ Client :: Client ( const std::string& file,const char c ) {
 }
 
 Client :: ~Client() {
-        this->queue->destroy ();
+        //this->queue->destroy ();
         delete this->queue;
 }
 
-message Client :: sendRequest ( /*const std::string&*/ char text ) const {
+message Client :: sendRequest ( char queryType,  /*const std::string&*/ char text ) const {
         message req;
         message res;
 
         req.mtype = REQUEST;
         req.id = getpid();
+        req.queryType = queryType;
         //strcpy ( req.text,text.c_str() );
         req.text = text;
 

@@ -4,8 +4,11 @@
 
 #include <signal.h>
 
-const char SALIDA = '$';
+const char INSERT = 'i';
 
-#define SENAL_SALIDA SIGCHLD;
+const char FIND_NAME = 'n';
+
+
+#define SENAL_SALIDA SIGINT
 
 #endif /* CONSTANTS_H_ */
