@@ -8,9 +8,17 @@
 
 Placed in /server
 
-'$ cmake .'
-'$ make all'
-'./ConcuServer'
+
+`$ cmake .`
+
+
+`$ make all`
+
+
+`./ConcuServer`
+
+
+
 
 
 IMPORTANT: Server ends execution when SIGINT arrives at main process
@@ -20,9 +28,14 @@ IMPORTANT: Server ends execution when SIGINT arrives at main process
 
 Placed in /client
 
-'$ cmake .'
-'$ make all'
-'./ConcuClient'
+
+`$ cmake .`
+
+
+`$ make all`
+
+
+`./ConcuClient`
 
 
 
