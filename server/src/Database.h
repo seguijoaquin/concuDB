@@ -3,17 +3,22 @@
 
 #include "../../utils/Messages.h"
 #include "../../utils/LockFile.h"
+#include "../../utils/Constants.h"
+
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
 
 class Database {
 	private:
-        int db;
-        int index;
+        LockFile* indexFile;
+	std::fstream db;
 		
 	public:
 		Database ();
 		~Database ();
-        bool insert();
-        bool findName();
+        int insert(row newRow);
+        int findName();
 
 };
 

@@ -17,7 +17,7 @@ typedef struct message {
         long mtype;
         int id;
         char queryType;
-        char text;
+        int success;
         struct row row;
 } message;
 

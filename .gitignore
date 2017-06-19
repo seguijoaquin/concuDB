@@ -46,6 +46,6 @@ server/Makefile
 server/*.log
 server/ConcuServer
 server/*.out
-
+server/database.db
 
 .vscode/*

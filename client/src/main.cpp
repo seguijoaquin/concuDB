@@ -58,7 +58,7 @@ int main() {
 	memset (&newMessage,0,sizeof(newMessage));
 
 	while ( generateRequest(&newMessage,&client) ) {
-		if (newMessage.text != SUCCESS) {
+		if (newMessage.success != SUCCESS) {
 			Logger::getInstance()->error("El servidor ha devuelto un mensaje de error");
 		} else {
     		Logger::getInstance()->debug("El servidor dice que la consulta fue procesada con exito!");

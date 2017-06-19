@@ -55,19 +55,19 @@ message Server :: processRequest (message* requestReceived) const {
 
         if (requestReceived->queryType == INSERT) {
                 Logger::getInstance()->debug("Insertando fila");
-                std::stringstream nombre,direccion,telefono;
-                nombre << "Nombre: " << requestReceived->row.nombre;
-                Logger::getInstance()->debug(nombre.str().c_str());
-                direccion << "Direccion: " << requestReceived->row.direccion;
-                Logger::getInstance()->debug(direccion.str().c_str());
-                telefono << "Telefono: " << requestReceived->row.telefono;
-                Logger::getInstance()->debug(telefono.str().c_str());
+
+                row newRow;
+                memset(&newRow,0,sizeof(row));
+                strncpy((newRow.nombre), (requestReceived->row.nombre), 62*sizeof(char));
+                strncpy((newRow.direccion), (requestReceived->row.direccion), 121*sizeof(char));
+                strncpy((newRow.telefono), (requestReceived->row.telefono), 14*sizeof(char));
+
                 //mtype of the response is the id of the process who made the petition to the server
                 message response;
                 memset(&response, 0, sizeof(message));
                 response.mtype = requestReceived->id;
                 response.id = RESPONSE;
-                response.text = SUCCESS;
+                response.success = this->db->insert(newRow);
 
                 return response;
         }
@@ -78,7 +78,7 @@ message Server :: processRequest (message* requestReceived) const {
                 memset(&response, 0, sizeof(message));
                 response.mtype = requestReceived->id;
                 response.id = RESPONSE;
-                response.text = SUCCESS;
+                response.success = SUCCESS;
 
                 return response;
         }
