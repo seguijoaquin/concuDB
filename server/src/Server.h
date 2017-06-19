@@ -11,11 +11,13 @@
 #include "../../utils/signals/SENAL_SALIDA_Handler.h"
 #include "../../utils/signals/SignalHandler.h"
 #include "../../utils/LockFile.h"
+#include "Database.h"
 
 class Server {
 	private:
 		Queue<message>* queue;
 		SENAL_SALIDA_Handler senal_salida_handler;
+		Database* db;
 		
 	public:
 		Server ( const std::string& file, const char c );

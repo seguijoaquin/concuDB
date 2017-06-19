@@ -1,18 +1,17 @@
 #include "Server.h"
 #include "../../utils/Logger.h"
 #include "../../utils/Constants.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 
 Server :: Server (const std::string& file, const char c ) {
 	this->queue = new Queue<message> (file,c);
+        this->db = new Database ();
 }
 
 Server :: ~Server () {
         this->queue->destroy();
 	delete (this->queue);
+        delete (this->db);
 }
 
 void Server :: registerExitSignal () {
