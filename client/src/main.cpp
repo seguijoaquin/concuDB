@@ -6,18 +6,28 @@
 #include <string>
 
 
+void printMenu () {
+	std::cout << std::endl;
+	std::cout << "Qué desea hacer?" << std::endl;
+	std::cout << "----------------" << std::endl;
+	std::cout << "1) Ingresar nuevo registro" << std::endl;
+	std::cout << "2) Consultar por nombre" << std::endl;
+	std::cout << "3) Salir" << std::endl;
+};
+
 message buildNameSearch(Client* client) {
 	Logger::getInstance()->debug("Enviando un mensaje de busqueda...");
 	message newMessage;
 	memset (&newMessage,0,sizeof(message));
+	std::cout << "Ingrese nombre a buscar (sin espacios, arreglar bug): ";
+	std::cin >> newMessage.row.nombre;
 	return client->sendRequest(FIND_NAME,newMessage);
 };
 
 message buildNewRegister(Client* client) {
-	//TODO: Armar message a enviar con los datos del nuevo registro
 	message newMessage;
 	memset (&newMessage,0,sizeof(message));
-	std::cout << "Ingrese nombre: ";
+	std::cout << "Ingrese nombre (sin espacios, arreglar bug): ";
 	std::cin >> newMessage.row.nombre;
 	std::cout << "Ingrese direccion (sin espacios, arreglar bug): ";
 	std::cin >> newMessage.row.direccion;
@@ -29,12 +39,7 @@ message buildNewRegister(Client* client) {
 };
 
 bool generateRequest(message* request, Client* client) {
-	std::cout << std::endl;
-	std::cout << "Qué desea hacer?" << std::endl;
-	std::cout << "----------------" << std::endl;
-	std::cout << "1) Ingresar nuevo registro" << std::endl;
-	std::cout << "2) Consultar por nombre" << std::endl;
-	std::cout << "3) Salir" << std::endl;
+	printMenu();
 	char input;
 	std::cin >> input;
 	std::cout << "Eligió la opción: " << input << std::endl;
@@ -53,10 +58,11 @@ int main() {
 	memset (&newMessage,0,sizeof(newMessage));
 
 	while ( generateRequest(&newMessage,&client) ) {
-		std::stringstream textoRta;
-    	textoRta << "Respuesta: " << newMessage.text;
-    	Logger::getInstance()->debug(textoRta.str().c_str());
-		sleep(1);
+		if (newMessage.text != SUCCESS) {
+			Logger::getInstance()->error("El servidor ha devuelto un mensaje de error");
+		} else {
+    		Logger::getInstance()->debug("El servidor dice que la consulta fue procesada con exito!");
+		}
 	}
 
 	Logger::getInstance()->debug("Finalizando Cliente");

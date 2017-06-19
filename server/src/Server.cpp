@@ -1,6 +1,9 @@
 #include "Server.h"
 #include "../../utils/Logger.h"
 #include "../../utils/Constants.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 
 Server :: Server (const std::string& file, const char c ) {
@@ -29,8 +32,7 @@ void Server :: start () {
                         this->answerRequest(response);
                         exit(EXIT_SUCCESS);
                 }
-                sleep(1);
-        } 
+        }
         Logger::getInstance()->debug("Saliendo...");
         this->destroyExitSignal();
 }
@@ -61,22 +63,26 @@ message Server :: processRequest (message* requestReceived) const {
                 Logger::getInstance()->debug(direccion.str().c_str());
                 telefono << "Telefono: " << requestReceived->row.telefono;
                 Logger::getInstance()->debug(telefono.str().c_str());
+                //mtype of the response is the id of the process who made the petition to the server
+                message response;
+                memset(&response, 0, sizeof(message));
+                response.mtype = requestReceived->id;
+                response.id = RESPONSE;
+                response.text = SUCCESS;
+
+                return response;
         }
 
         if (requestReceived->queryType == FIND_NAME) {
                 Logger::getInstance()->debug("Buscando nombre");
+                message response;
+                memset(&response, 0, sizeof(message));
+                response.mtype = requestReceived->id;
+                response.id = RESPONSE;
+                response.text = SUCCESS;
+
+                return response;
         }
-        std::stringstream textoRta;
-        textoRta << "[Recibido de : " << requestReceived->id << "] = " << requestReceived->text;
-        Logger::getInstance()->debug(textoRta.str().c_str());
-        //mtype of the response is the id of the process who made the petition to the server
-        message response;
-        memset(&response, 0, sizeof(message));
-        response.mtype = requestReceived->id;
-        response.id = RESPONSE;
-        response.queryType = 'a';
-        response.text = 'S';
-        return response;
 }
 
 int Server :: answerRequest (message response) const {
