@@ -9,9 +9,9 @@ Server :: Server (const std::string& file, const char c ) {
 }
 
 Server :: ~Server () {
-        this->queue->destroy();
+	this->queue->destroy();
 	delete (this->queue);
-        delete (this->db);
+	delete (this->db);
 }
 
 void Server :: registerExitSignal () {
@@ -79,10 +79,13 @@ message Server :: processRequest (message* requestReceived) const {
                 response.mtype = requestReceived->id;
                 response.id = RESPONSE;
                 response.success = SUCCESS;
-
+				std::vector<struct row> rows = this->db->findName(requestReceived->row.nombre);
+				for (int i=0 ; i<rows.size() ; i++) {
+					std::cout << rows[i].telefono << std::endl;
+				}
                 return response;
         }
-}
+}	
 
 int Server :: answerRequest (message response) const {
         Logger::getInstance()->debug("Respondiendo...");
