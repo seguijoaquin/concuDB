@@ -119,24 +119,12 @@ std::vector<message> Server :: processRequest (message* requestReceived) const {
 		return responses;
 }
 
-void loguearMensaje(message msg) {
-	std::stringstream ss;
-	ss << "mtype: " << msg.mtype
-		<< " success: " << msg.success
-		<< " row: Nombre: " << msg.row.nombre
-		<< " Direccion: " << msg.row.direccion 
-		<< " Telefono: " << msg.row.telefono;
-		
-	Logger::getInstance()->debug(ss.str());
-}
-
-
 
 int Server :: answerRequest (std::vector<message> responses) const {
         Logger::getInstance()->debug("Respondiendo...");
 		for (int i = 0 ; i < responses.size() ; i++) {
 			Logger::getInstance()->debug("Enviando: ");
-			loguearMensaje(responses[i]);
+			logMessage(responses[i]);
 			this->queue->write ( responses[i] );
 		}
         //returns the id of the process who's picking up the server message

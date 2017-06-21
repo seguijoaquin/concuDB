@@ -29,8 +29,8 @@ std::vector<message> Client :: sendRequest ( char queryType,  message newMessage
 		int numberOfMessages = res.numberOfMessages;
 		std::vector<message> responses;
 		responses.push_back(res);
+		
 		for (int i = 0 ; i < numberOfMessages ; i++ ) {
-			std::cout << numberOfMessages << std::endl;
 			this->queue->read ( getpid(),&res );
 			responses.push_back(res);
 		}
