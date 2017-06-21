@@ -3,9 +3,11 @@
 
 #include <string>
 #include <string.h>
+#include <iostream>
 
 #include "../../utils/Messages.h"
 #include "../../utils/Queue.h"
+#include "../../utils/Constants.h"
 
 class Client {
 

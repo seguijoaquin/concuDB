@@ -25,8 +25,8 @@ class Server {
 
 		void start();
 		bool getRequest ( message* receivedRequest ) const;
-		message processRequest ( message* receivedRequest ) const;
-		int answerRequest ( message response ) const;
+		std::vector<message> processRequest ( message* receivedRequest ) const;
+		int answerRequest ( std::vector<message> responses ) const;
 		void registerExitSignal ();
 		void destroyExitSignal ();
 

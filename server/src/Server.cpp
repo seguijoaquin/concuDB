@@ -27,8 +27,8 @@ void Server :: start () {
         while ( this->senal_salida_handler.getGracefulQuit() == 0 ) {
                 message requestReceived;
                 if ( this->getRequest(&requestReceived) ) {
-                        message response = this->processRequest(&requestReceived);
-                        this->answerRequest(response);
+                        std::vector<message> responses = this->processRequest(&requestReceived);
+                        this->answerRequest(responses);
                         exit(EXIT_SUCCESS);
                 }
         }
@@ -50,9 +50,9 @@ bool Server :: getRequest (message* requestReceived) const {
         }
 }
 
-message Server :: processRequest (message* requestReceived) const {
+std::vector<message> Server :: processRequest (message* requestReceived) const {
         Logger::getInstance()->debug("Procesando Request en nuevo proceso...");
-
+		std::vector<message> responses;
         if (requestReceived->queryType == INSERT) {
                 Logger::getInstance()->debug("Insertando fila");
 
@@ -68,28 +68,45 @@ message Server :: processRequest (message* requestReceived) const {
                 response.mtype = requestReceived->id;
                 response.id = RESPONSE;
                 response.success = this->db->insert(newRow);
-
-                return response;
+			
+				responses.push_back(response);
+                return responses;
         }
 
         if (requestReceived->queryType == FIND_NAME) {
                 Logger::getInstance()->debug("Buscando nombre");
-                message response;
-                memset(&response, 0, sizeof(message));
-                response.mtype = requestReceived->id;
-                response.id = RESPONSE;
-                response.success = SUCCESS;
+                //	At first the server will send a message containing 
+                //	the number of rows that it will be sending
+				message numOfMsgRes;
+				memset(&numOfMsgRes, 0, sizeof(message));
+				numOfMsgRes.mtype = requestReceived->id;
+				numOfMsgRes.id = RESPONSE;
+				numOfMsgRes.success = SUCCESS;
 				std::vector<struct row> rows = this->db->findName(requestReceived->row.nombre);
+				numOfMsgRes.numberOfMessages = rows.size();
+				
+				responses.push_back(numOfMsgRes);
+				
 				for (int i=0 ; i<rows.size() ; i++) {
-					std::cout << rows[i].telefono << std::endl;
+					message response;
+					memset(&response, 0, sizeof(message));
+					response.mtype = requestReceived->id;
+					response.id = RESPONSE;
+					response.success = SUCCESS;
+					response.row = rows[i];
+					
+					responses.push_back(response);
 				}
-                return response;
+                return responses;
         }
-}	
+}
 
-int Server :: answerRequest (message response) const {
+int Server :: answerRequest (std::vector<message> responses) const {
         Logger::getInstance()->debug("Respondiendo...");
-        this->queue->write ( response );
+        std::cout << "Numero a enviar: "<< responses.size() << std::endl;
+		for (int i=0 ; i < responses.size() ; i++) {
+			this->queue->write ( responses[i] );
+		}
         //returns the id of the process who's picking up the server message
-        return response.id;
+        return responses[0].id;
 }
