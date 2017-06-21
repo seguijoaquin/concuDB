@@ -43,9 +43,20 @@ int addNumberOfMessagesResponse(std::vector<message>* responses, message req, in
 	numOfMsgRes.id = RESPONSE;
 	numOfMsgRes.success = SUCCESS;
 	numOfMsgRes.numberOfMessages = numberOfMessages;
-	std::cout << numberOfMessages << std::endl;
 	responses->push_back(numOfMsgRes);
 }
+
+void logMessage(message msg) {
+	std::stringstream ss;
+	ss << "mtype: " << msg.mtype
+		<< " success: " << msg.success
+		<< " row: Nombre: " << msg.row.nombre
+		<< " Direccion: " << msg.row.direccion 
+		<< " Telefono: " << msg.row.telefono;
+		
+	Logger::getInstance()->debug(ss.str());
+}
+
 
 bool Server :: getRequest (message* requestReceived) const {
         Logger::getInstance()->debug("Esperando request...");
@@ -54,6 +65,8 @@ bool Server :: getRequest (message* requestReceived) const {
         if ( result == -1 ) return false;
         if ( fork() == 0 ) {
                 (*requestReceived) = newRequest;
+                Logger::getInstance()->debug("Por procesar el siguiente request");
+				logMessage(newRequest);
                 return true;
         } else {
                 Logger::getInstance()->debug("Request recibido!");
@@ -106,14 +119,24 @@ std::vector<message> Server :: processRequest (message* requestReceived) const {
 		return responses;
 }
 
-
+void loguearMensaje(message msg) {
+	std::stringstream ss;
+	ss << "mtype: " << msg.mtype
+		<< " success: " << msg.success
+		<< " row: Nombre: " << msg.row.nombre
+		<< " Direccion: " << msg.row.direccion 
+		<< " Telefono: " << msg.row.telefono;
+		
+	Logger::getInstance()->debug(ss.str());
+}
 
 
 
 int Server :: answerRequest (std::vector<message> responses) const {
         Logger::getInstance()->debug("Respondiendo...");
-        std::cout << "Numero a enviar: "<< responses.size() << std::endl;
 		for (int i = 0 ; i < responses.size() ; i++) {
+			Logger::getInstance()->debug("Enviando: ");
+			loguearMensaje(responses[i]);
 			this->queue->write ( responses[i] );
 		}
         //returns the id of the process who's picking up the server message

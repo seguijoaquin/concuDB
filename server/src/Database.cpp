@@ -59,7 +59,6 @@ std::vector<struct row> Database :: findName (std::string name) {
 		this->db.seekg(0,ios::beg);
 		while (std::getline(this->db,line)) {
 			struct row fields = getFields(line);
-			std::cout << "fields nomre:" <<fields.nombre << " parametro: " << name<< std::endl;
 			if ( name.compare( fields.nombre ) == 0 ){
 				result.push_back(fields);
 			}

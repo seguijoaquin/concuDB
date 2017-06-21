@@ -23,15 +23,20 @@ message buildNameSearch(Client* client) {
 	std::cin >> newMessage.row.nombre;
 	Logger::getInstance()->debug("Enviando un mensaje de nuevo registro...");
 	std::vector<message> responses = client->sendRequest(FIND_NAME,newMessage);
-	for (int i = 0; i < responses.size() ; i++ ) {
-		row rowObtained = responses[i].row;
-		std::stringstream ss;
-		ss << "Nombre: " << rowObtained.nombre;
-		ss << " Direccion: " << rowObtained.direccion;
-		ss << " Telefono: " << rowObtained.telefono;
-		
-		Logger::getInstance()->debug("Fila obtenida:");
-		Logger::getInstance()->debug(ss.str() );
+	if ( responses.size() != 1 ) {
+		// El 0 es el mensaje que dice cuantos hay que leer
+		for (int i = 1; i < responses.size() ; i++ ) {
+			row rowObtained = responses[i].row;
+			std::stringstream ss;
+			ss << "Nombre: " << rowObtained.nombre;
+			ss << " Direccion: " << rowObtained.direccion;
+			ss << " Telefono: " << rowObtained.telefono;
+			
+			Logger::getInstance()->debug("Fila obtenida:");
+			Logger::getInstance()->debug(ss.str() );
+		}
+	} else {
+		Logger::getInstance()->debug("No existen resultados para la busqueda.");
 	}
 	
 	return responses[0];
@@ -49,10 +54,6 @@ message buildNewRegister(Client* client) {
 
 	Logger::getInstance()->debug("Enviando un mensaje de nuevo registro...");
 	std::vector<message> responses = client->sendRequest(INSERT,newMessage);
-	
-	for (int i = 1; i < responses.size() ; i++ ) {
-		
-		}
 	
 	return responses[0];
 };
