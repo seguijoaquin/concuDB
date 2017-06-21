@@ -12,11 +12,10 @@ Client :: ~Client() {
         delete this->queue;
 }
 
-message Client :: sendRequest ( char queryType,  message newMessage ) const {
+std::vector<message> Client :: sendRequest ( char queryType,  message newMessage ) const {
         message req;
         message res;
         memset(&req, 0, sizeof(message));
-
         req.mtype = REQUEST;
         req.id = getpid();
         req.queryType = queryType;
@@ -25,21 +24,16 @@ message Client :: sendRequest ( char queryType,  message newMessage ) const {
         strncpy((req.row.telefono), (newMessage.row.telefono), 14*sizeof(char));
         this->queue->write ( req );
         
-        if ( queryType == FIND_NAME ) {
+        //read mensaje que contiene el numero de mensajes
+        this->queue->read ( getpid(),&res );
+		int numberOfMessages = res.numberOfMessages;
+		
+		std::vector<message> responses;
+		for (int i = 0 ; i < numberOfMessages ; i++ ) {
 			this->queue->read ( getpid(),&res );
-			int numberOfMessages = res.numberOfMessages;
-			std::cout << "Numero a leer: "<< res.numberOfMessages << std::endl;
-			for (int i=0 ; i < numberOfMessages ; i++ ) {
-				this->queue->read ( getpid(),&res );
-				std::cout << "Nombre: " << res.row.nombre << " Telefono: " <<res.row.telefono 
-							<< " Direccion: " << res.row.direccion << std::endl;
-							
-			}
-		} else {
-			this->queue->read ( getpid(),&res );
+			responses.push_back(res);
 		}
-        
 
-        return res;
+        return responses;
 }
 
