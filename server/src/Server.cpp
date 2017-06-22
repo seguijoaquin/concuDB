@@ -36,6 +36,8 @@ void Server :: start () {
         this->destroyExitSignal();
 }
 
+//	Creates a message that specifies the amount of messages that
+//	the server is going to send.
 int addNumberOfMessagesResponse(std::vector<message>* responses, message req, int numberOfMessages) {
 	message numOfMsgRes;
 	memset(&numOfMsgRes, 0, sizeof(message));

@@ -58,9 +58,9 @@ message buildNameSearch(Client* client){
 message buildNewRegister(Client* client) {
 	message newMessage;
 	memset (&newMessage,0,sizeof(message));
-	std::cout << "Ingrese nombre (sin espacios, arreglar bug): ";
+	std::cout << "Ingrese nombre: ";
 	getParameter(newMessage.row.nombre,true);
-	std::cout << "Ingrese direccion (sin espacios, arreglar bug): ";
+	std::cout << "Ingrese direccion: ";
 	getParameter(newMessage.row.direccion,false);
 	std::cout << "Ingrese telefono: ";
 	getParameter(newMessage.row.telefono,false);
