@@ -5,6 +5,11 @@
 #include "../../utils/LockFile.h"
 #include "../../utils/Constants.h"
 
+
+#include "../../utils/LockRead.h"
+#include "../../utils/LockWrite.h"
+
+
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
@@ -16,9 +21,8 @@
 
 class Database {
 	private:
-        LockFile* indexFile;
-	std::fstream db;
-		
+				std::fstream db;
+
 	public:
 		Database ();
 		~Database ();

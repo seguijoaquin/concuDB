@@ -20,7 +20,7 @@ public:
 	int liberarLock ();
 	ssize_t escribir ( const void* buffer,const ssize_t buffsize ) const;
 	ssize_t escribirAlInicio ( const void* buffer,const ssize_t buffsize ) const;
-	int leerInt (); 
+	int leerInt ();
 };
 
 #endif /* LOCKFILE_H_ */
