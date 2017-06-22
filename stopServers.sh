@@ -1,4 +1,4 @@
-sudo apt-get install -y expect
+#!/bin/bash
 
 string=`ps -a | grep ConcuServer`
 until [ -z $string ]; do
@@ -7,6 +7,3 @@ until [ -z $string ]; do
 	string=`ps -a | grep ConcuServer`
          done
 
-./test/runServer.sh
-
-./test/runClientQueries.sh &
