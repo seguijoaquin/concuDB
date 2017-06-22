@@ -4,7 +4,7 @@
 #include "../../utils/Constants.h"
 #include <strings.h>
 #include <string>
-
+	
 
 void printMenu () {
 	std::cout << std::endl;
@@ -24,17 +24,38 @@ void getParameter(char* parameter_insert,bool value){
 	if (value) std::cin.ignore();
 	std::getline(std::cin,answer);
 	strncpy(parameter_insert,answer.c_str(),answer.length());
-	//TODO borrar este linea cuando ya se haga la entrega
-	printf("El parametro ingresado es:%s \n",parameter_insert);
 }
 
 message buildNameSearch(Client* client){
 	Logger::getInstance()->debug("Enviando un mensaje de busqueda...");
 	message newMessage;
 	memset (&newMessage,0,sizeof(message));
-	std::cout << "Ingrese nombre a buscar: ";
-	getParameter(newMessage.row.nombre,true);
+
+	std::cout << "Ingrese nombre a buscar: ";	
 	return client->sendRequest(FIND_NAME,newMessage);
+
+	std::cout << "Ingrese nombre a buscar (sin espacios, arreglar bug): ";
+	getParameter(newMessage.row.nombre,true);
+	
+	Logger::getInstance()->debug("Enviando un mensaje de nuevo registro...");
+	std::vector<message> responses = client->sendRequest(FIND_NAME,newMessage);
+	if ( responses.size() != 1 ) {
+		// El 0 es el mensaje que dice cuantos hay que leer
+		for (int i = 1; i < responses.size() ; i++ ) {
+			row rowObtained = responses[i].row;
+			std::stringstream ss;
+			ss << "Nombre: " << rowObtained.nombre;
+			ss << " Direccion: " << rowObtained.direccion;
+			ss << " Telefono: " << rowObtained.telefono;
+			
+			Logger::getInstance()->debug("Fila obtenida:");
+			Logger::getInstance()->debug(ss.str() );
+		}
+	} else {
+		Logger::getInstance()->debug("No existen resultados para la busqueda.");
+	}
+	
+	return responses[0];
 };
 
 message buildNewRegister(Client* client) {
@@ -47,7 +68,9 @@ message buildNewRegister(Client* client) {
 	std::cout << "Ingrese telefono: ";
 	getParameter(newMessage.row.telefono,false);
 	Logger::getInstance()->debug("Enviando un mensaje de nuevo registro...");
-	return client->sendRequest(INSERT,newMessage);
+	std::vector<message> responses = client->sendRequest(INSERT,newMessage);
+	
+	return responses[0];
 };
 
 bool generateRequest(message* request, Client* client) {

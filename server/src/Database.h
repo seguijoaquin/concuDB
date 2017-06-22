@@ -8,6 +8,11 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <cstring>
+#include <string>
+#include <vector>
+#include <ctype.h>
 
 class Database {
 	private:
@@ -18,7 +23,7 @@ class Database {
 		Database ();
 		~Database ();
         int insert(row newRow);
-        int findName();
+        std::vector<struct row> findName(std::string name);
 
 };
 
