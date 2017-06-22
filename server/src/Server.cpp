@@ -81,18 +81,18 @@ std::vector<message> Server :: processRequest (message* requestReceived) const {
 		std::vector<message> responses;
         if (requestReceived->queryType == INSERT) {
                 Logger::getInstance()->debug("Insertando fila");
-                addNumberOfMessagesResponse(&responses,*requestReceived,1);
 				
                 row newRow;
                 memset(&newRow,0,sizeof(row));
                 strncpy((newRow.nombre), (requestReceived->row.nombre), 62*sizeof(char));
                 strncpy((newRow.direccion), (requestReceived->row.direccion), 121*sizeof(char));
                 strncpy((newRow.telefono), (requestReceived->row.telefono), 14*sizeof(char));
-
+				
                 //mtype of the response is the id of the process who made the petition to the server
                 message response;
                 memset(&response, 0, sizeof(message));
                 response.mtype = requestReceived->id;
+                response.numberOfMessages = 0;
                 response.id = RESPONSE;
                 response.success = this->db->insert(newRow);
 			
