@@ -6,13 +6,13 @@ spawn "./ConcuClient"
 
 
 
-for {set i 1} {$i < 10} {incr i 1} {
+for {set i 1} {$i < 5} {incr i 1} {
  expect "3) Salir"
  send "2\r"
 
  expect "Ingrese nombre a buscar"
 
- send "diego\r"
+ send "pepito\r"
 
  expect "3) Salir"
  send "1\r"

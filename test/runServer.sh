@@ -2,4 +2,4 @@
 
 cd server
 
-"./ConcuServer" & >> serverOutput.txt
+"./ConcuServer" &
