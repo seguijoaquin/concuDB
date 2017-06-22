@@ -2,4 +2,7 @@
 
 cd server
 
+cmake .
+make all
+
 "./ConcuServer" &

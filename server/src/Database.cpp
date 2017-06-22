@@ -22,8 +22,8 @@ Database :: ~Database () {
 int Database :: insert (row newRow) {
       //this->indexFile->tomarLock();
       LockWrite lock("index.db");
-      std::cout << "Voy a escribir, voy a tardar 10 segundos.."<< std::endl;
-      sleep(10);
+      //std::cout << "Voy a escribir, voy a tardar 10 segundos.."<< std::endl;
+      //sleep(10);
         int newIndex = lock.leerInt() + 1;
         lock.escribirAlInicio(&newIndex,sizeof(newIndex));
         if (this->db.is_open()) {

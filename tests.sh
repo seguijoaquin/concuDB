@@ -9,5 +9,11 @@ until [ -z $string ]; do
 
 ./test/runServer.sh
 
+cd client
+
+cmake .
+make all
+cd ..
+
 ./test/runClientQueries.sh &
 ./test/runClientQueries.sh &

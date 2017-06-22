@@ -31,10 +31,7 @@ message buildNameSearch(Client* client){
 	message newMessage;
 	memset (&newMessage,0,sizeof(message));
 
-	std::cout << "Ingrese nombre a buscar: ";	
-	return client->sendRequest(FIND_NAME,newMessage);
-
-	std::cout << "Ingrese nombre a buscar (sin espacios, arreglar bug): ";
+	std::cout << "Ingrese nombre a buscar: ";
 	getParameter(newMessage.row.nombre,true);
 	
 	Logger::getInstance()->debug("Enviando un mensaje de nuevo registro...");
