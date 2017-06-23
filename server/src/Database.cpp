@@ -20,6 +20,10 @@ int Database :: insert (row newRow) {
         if (this->db.is_open()) {
             this->db << "(" << newIndex << ";" << newRow.nombre << ";" << newRow.direccion << ";" << newRow.telefono << ")" << std::endl;
             this->db.flush();
+            if ( db.fail() ) {
+				perror("Insert failed");
+				return -1;
+			}
         }
     return SUCCESS;
 }
@@ -52,6 +56,10 @@ std::vector<struct row> Database :: findName (std::string name) {
 		this->db.clear();
 		this->db.seekg(0,ios::beg);
 		while (std::getline(this->db,line)) {
+			if ( db.fail() ) {
+				perror("findName Failed");
+				throw errno;
+			}
 			struct row fields = getFields(line);
 			if ( name.compare( fields.nombre ) == 0 ){
 				result.push_back(fields);

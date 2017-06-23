@@ -78,6 +78,16 @@ bool Server :: getRequest (message* requestReceived) const {
 
 
 
+message failureResponse (message requestReceived) {
+	message response;
+	memset(&response, 0, sizeof(message));
+	response.mtype = requestReceived.id;
+	response.id = RESPONSE;
+	response.success = -1;
+	
+	return response;
+}
+
 std::vector<message> Server :: processRequest (message* requestReceived) const {
         Logger::getInstance()->debug("Procesando Request en nuevo proceso...");
 		std::vector<message> responses;
@@ -104,22 +114,29 @@ std::vector<message> Server :: processRequest (message* requestReceived) const {
                 Logger::getInstance()->debug("Buscando nombre");
                 //	At first the server will send a message containing 
                 //	the number of rows that it will be sending
-				std::vector<struct row> rows = this->db->findName(requestReceived->row.nombre);
+				try {
+					std::vector<struct row> rows = this->db->findName(requestReceived->row.nombre);
+					addNumberOfMessagesResponse(&responses,*requestReceived,rows.size());
 				
-				addNumberOfMessagesResponse(&responses,*requestReceived,rows.size());
-				
-				for (int i=0 ; i<rows.size() ; i++) {
-					message response;
-					memset(&response, 0, sizeof(message));
-					response.mtype = requestReceived->id;
-					response.id = RESPONSE;
-					response.success = SUCCESS;
-					response.row = rows[i];
-					
-					responses.push_back(response);
+					for (int i=0 ; i<rows.size() ; i++) {
+						message response;
+						memset(&response, 0, sizeof(message));
+						response.mtype = requestReceived->id;
+						response.id = RESPONSE;
+						response.success = SUCCESS;
+						response.row = rows[i];
+						
+						responses.push_back(response);
+					}
+					return responses;
+				} catch (int e) {
+					responses.push_back(failureResponse(*requestReceived));
+					return responses;
 				}
-        }
-		return responses;
+			}
+			
+			return responses;
+				
 }
 
 
