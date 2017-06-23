@@ -6,6 +6,7 @@ using namespace std;
 
 Database :: Database () {
     this->db.open("database.db", std::fstream::in | std::fstream::out | std::ios_base::app);
+    
 }
 
 Database :: ~Database () {

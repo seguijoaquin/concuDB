@@ -13,6 +13,8 @@ Lock :: Lock ( const std::string nombre ) {
 
 Lock :: ~Lock () {
   this->fl.l_type = F_UNLCK;
-  fcntl ( this->fd,F_SETLK,&(this->fl) );
+  if ( fcntl ( this->fd,F_SETLK,&(this->fl) ) == -1 ) {
+	  perror("Error trying to set a lock");
+  }
 	close ( this->fd );
 }

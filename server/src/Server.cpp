@@ -105,6 +105,7 @@ std::vector<message> Server :: processRequest (message* requestReceived) const {
                 //	At first the server will send a message containing 
                 //	the number of rows that it will be sending
 				std::vector<struct row> rows = this->db->findName(requestReceived->row.nombre);
+				
 				addNumberOfMessagesResponse(&responses,*requestReceived,rows.size());
 				
 				for (int i=0 ; i<rows.size() ; i++) {

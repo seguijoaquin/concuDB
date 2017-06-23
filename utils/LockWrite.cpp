@@ -1,7 +1,9 @@
 #include "LockWrite.h"
 
 LockWrite :: LockWrite ( const std::string nombre ):Lock(nombre){
-  tomarLock();
+  if ( tomarLock() == -1 ) { 
+	 perror("Error: Tomar lock");
+  }
 }
 
 
