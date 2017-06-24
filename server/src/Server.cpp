@@ -83,7 +83,7 @@ message failureResponse (message requestReceived) {
 	memset(&response, 0, sizeof(message));
 	response.mtype = requestReceived.id;
 	response.id = RESPONSE;
-	response.success = -1;
+	response.success = ERROR;
 	
 	return response;
 }

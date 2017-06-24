@@ -22,7 +22,7 @@ int Database :: insert (row newRow) {
             this->db.flush();
             if ( db.fail() ) {
 				perror("Insert failed");
-				return -1;
+				return ERROR;
 			}
         }
     return SUCCESS;
