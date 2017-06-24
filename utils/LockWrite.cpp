@@ -3,12 +3,16 @@
 LockWrite :: LockWrite ( const std::string nombre ):Lock(nombre){
   if ( tomarLock() == -1 ) { 
 	 perror("Error: Tomar lock");
+	 throw errno;
   }
 }
 
 
 int LockWrite::tomarLock(){
-  this->fd = open (this->nombre.c_str(),O_CREAT|O_RDWR,0777);
+  this->fd = open (this->nombre.c_str(),O_RDWR,0777);
+  if (this->fd == -1) {
+	  return ERROR;
+  }
   this->fl.l_type = F_WRLCK;
 	return fcntl (this->fd,F_SETLKW,&(this->fl));
 }

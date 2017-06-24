@@ -14,6 +14,7 @@ Database :: ~Database () {
 }
 
 int Database :: insert (row newRow) {
+	try {
       LockWrite lock("index.db");
         int newIndex = lock.leerInt() + 1;
         lock.escribirAlInicio(&newIndex,sizeof(newIndex));
@@ -26,6 +27,10 @@ int Database :: insert (row newRow) {
 			}
         }
     return SUCCESS;
+	} catch (int e) {
+		return ERROR;
+	}
+	
 }
 
 struct row getFields(std::string fileLine) {
@@ -50,7 +55,8 @@ struct row getFields(std::string fileLine) {
 }
 
 std::vector<struct row> Database :: findName (std::string name) {
-   LockRead lock("index.db");
+   try {
+		LockRead lock("index.db");
 		std::vector<struct row> result;
 		std::string line;
 		this->db.clear();
@@ -65,5 +71,8 @@ std::vector<struct row> Database :: findName (std::string name) {
 				result.push_back(fields);
 			}
 		}
-    return result;
+		return result;
+	} catch (int e) {
+		throw e;
+	}
 }
