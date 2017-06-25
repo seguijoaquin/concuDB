@@ -1,7 +1,10 @@
 #include "LockRead.h"
 
 LockRead :: LockRead ( const std::string nombre ):Lock(nombre){
-  tomarLock();
+  if ( tomarLock() == -1 ) { 
+	 perror("Error: Tomar lock");
+	 throw errno;
+  }
 }
 
 
